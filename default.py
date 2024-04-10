@@ -1,4 +1,5 @@
-﻿import json
+﻿from datetime import datetime
+import json
 import requests
 import urllib
 import sys
@@ -108,6 +109,8 @@ def router(item):
         if params.get("type", "") in ("live", "vod"):
             playback(params["type"], params["location"])
             return
+        elif params.get("type", "") == "personalized":
+            m = get_now_structure(params["location"], get_local_query(params["location"]), cc)
         else:
             m = get_now_structure(params["type"], get_now_query(md5[params["type"]], cc, params["location"]), cc)
     else:
@@ -140,6 +143,10 @@ def router(item):
 #
 # Now API functions
 #
+
+def get_local_query(menu_type):
+    result = requests.get(f"http://localhost:4800/api/file/{menu_type}.json")
+    return result.json()
         
 def get_now_query(hash_level, country_code, id=None):
 
@@ -222,6 +229,15 @@ def get_now_structure(menu_level, result, country_code):
                                 "location": j["location"],
                                 "type": "highlights"})
                             
+        for i in [("watchlist", {"DE": "Merkliste", "GB": "Watchlist"}), ("continue", {"DE": "Weiterschauen", "GB": "Continue Watching"})]:
+            d.append({
+                "title": i[1].get(country_code, i[1]["GB"]),
+                "t_img": f"{addonpath}/icon.png",
+                "f_img": f"{addonpath}/resources/fanart.png",
+                "location": i[0],
+                "type": "personalized"
+            })
+                            
     # HIGHLIGHTS MENU SECTION
     if menu_level == "highlights":
 
@@ -260,14 +276,16 @@ def get_now_structure(menu_level, result, country_code):
                         })
 
     # SUB MENU SECTION
-    if menu_level == "sub":
+    if menu_level in ["sub", "watchlist", "continue"]:
 
-        items = result["data"]["catalogue"]["items"]
+        data_type = "catalogue" if menu_level == "sub" else "continueWatching" if menu_level == "continue" else menu_level
+
+        items = result["data"][data_type]["items"]
 
         for i in items:
             if i["type"] == "ASSET/LINEAR":
                 d.append({
-                    "title": f'[COLOR yellowgreen][B]{i["channel"]["name"].replace(" SD", "")}:[/B][/COLOR] {i["title"]}',
+                    "title": f'[COLOR yellowgreen][B]{i["channel"]["name"].replace(" SD", "")}:[/B][/COLOR] {"[B]" + datetime.fromtimestamp(int(i["startTimeEpoch"])).strftime("%H:%M") + " | [/B]" if i.get("startTimeEpoch") else ""}{i["title"]}',
                     "location": i["serviceKey"],
                     "t_img": img_provider(i.get("images"), "highlights"),
                     "f_img": img_provider(i.get("images"), "landscape"),
