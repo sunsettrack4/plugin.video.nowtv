@@ -98,16 +98,11 @@ def playback(stream_type, stream_id):
 
     li.setProperty('inputstream', 'inputstream.adaptive')
     li.setProperty('inputstream.adaptive.manifest_type', 'mpd')
-    li.setProperty("IsPlayable", "true")
 
-    li.setProperty("IsPlayable", "true")
-    li.setInfo("video", {"title": title, 'genre': genre, 'year': year, 'director': director, 'duration': duration})
+    li.setInfo("video", {"title": title, 'genre': genre, 'year': year, 'director': director, 'duration': duration, 'plot': plot})
     li.setArt({'thumb': thumb})
-    li.setInfo('video', {'plot': plot})
 
     xbmcplugin.setResolvedUrl(__addon_handle__, True, li)
-
-    xbmc.Player().play(item=stream_url, listitem=li)
 
 
 def router(item):
@@ -148,6 +143,7 @@ def router(item):
                     })
         
         if i["type"] in ("live", "vod"):
+            li.setProperty("IsPlayable", "true")
             main_listing.append((url, li, False))
         else:
             main_listing.append((url, li, True))
