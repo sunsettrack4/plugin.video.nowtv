@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.nowtv" name="NOW TV VoD" version="1.0.1" provider-name="Jan-Luca Neumann">
+<addon id="plugin.video.nowtv" name="NOW TV VoD" version="1.0.2" provider-name="Jan-Luca Neumann">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
-    <import addon="script.service.nowtv" version="1.0.4"/>
+    <import addon="script.service.nowtv" version="1.0.9"/>
     <import addon="script.module.inputstreamhelper" version="0.5.2" />
     <import addon="script.module.requests" />
     <import addon="inputstream.adaptive" />
@@ -13,14 +13,10 @@
   <extension point="xbmc.addon.metadata">
   <summary lang="de_DE">WOW VoD</summary>
     <description lang="de_DE">Video-Add-on zur Wiedergabe von Filmen/Serien/Sportberichten bei WOW
-    
-* Es werden nur Android-Geräte mit gültiger Widevine L1-Zertifizierung unterstützt.
 
 * Zur Wiedergabe der Inhalte wird das NOW Live TV-Plugin "script.service.nowtv" mit entsprechenden Zugangsdaten benötigt.</description>
     <summary lang="en_GB">NOW TV VoD</summary>
     <description lang="en_GB">Video add-on for the playback of movies/series/sports events provided by NOW TV
-
-* Only Widevine L1-certified Android devices are supported.
 
 * The NOW TV Streamer (script.service.nowtv) and a valid Now TV account are required to playback the content.</description>
     <disclaimer lang="en_GB">Widevine is required to watch the streams.</disclaimer>

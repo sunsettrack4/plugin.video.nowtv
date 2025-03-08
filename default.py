@@ -77,8 +77,24 @@ def playback(stream_type, stream_id):
 
     li = xbmcgui.ListItem(path=stream_url)
 
-    li.setProperty('inputstream.adaptive.license_key', f"{local_url}/api/{stream_type}/{stream_id}/license" + "||R{SSM}|")
-    li.setProperty('inputstream.adaptive.license_type', "com.widevine.alpha")
+    if xbmc.getCondVisibility('system.platform.android'):
+
+        li.setProperty('inputstream.adaptive.license_key', f"{local_url}/api/{stream_type}/{stream_id}/license" + "||R{SSM}|")
+        li.setProperty('inputstream.adaptive.license_type', "com.widevine.alpha")
+
+    else:
+
+        try:
+            requests.get(stream_url)
+            key = requests.get(f"{local_url}/api/{stream_type}/{stream_id}/license").content.decode()
+            
+            if not key or key == "" or key == "None":
+                raise Exception()
+        except:
+            return
+        
+        li.setProperty('inputstream.adaptive.drm_legacy', f'org.w3.clearkey|{key}')
+
 
     li.setProperty('inputstream', 'inputstream.adaptive')
     li.setProperty('inputstream.adaptive.manifest_type', 'mpd')
