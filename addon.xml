@@ -2,7 +2,7 @@
 <addon id="plugin.video.nowtv" name="NOW TV VoD" version="1.0.2" provider-name="Jan-Luca Neumann">
   <requires>
     <import addon="xbmc.python" version="3.0.0"/>
-    <import addon="script.service.nowtv" version="1.0.9"/>
+    <import addon="script.service.nowtv" version="1.1.1"/>
     <import addon="script.module.inputstreamhelper" version="0.5.2" />
     <import addon="script.module.requests" />
     <import addon="inputstream.adaptive" />
@@ -10,6 +10,7 @@
   <extension point="xbmc.python.pluginsource" library="default.py">
     <provides>video</provides>
   </extension>
+  <extension point="xbmc.service" library="service.py" start="login"/>
   <extension point="xbmc.addon.metadata">
   <summary lang="de_DE">WOW VoD</summary>
     <description lang="de_DE">Video-Add-on zur Wiedergabe von Filmen/Serien/Sportberichten bei WOW

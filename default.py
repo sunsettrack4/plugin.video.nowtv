@@ -102,6 +102,10 @@ def playback(stream_type, stream_id):
     li.setInfo("video", {"title": title, 'genre': genre, 'year': year, 'director': director, 'duration': duration, 'plot': plot})
     li.setArt({'thumb': thumb})
 
+    if stream_type == 'vod':
+        from xbmcgui import Window, getCurrentWindowId
+        Window(getCurrentWindowId()).setProperty('nowtv_content_id', stream_id)
+
     xbmcplugin.setResolvedUrl(__addon_handle__, True, li)
 
 
